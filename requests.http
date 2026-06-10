@@ -1,0 +1,59 @@
+### 1. Create a valid job (expect 201)
+POST http://localhost:8080/api/jobs
+Content-Type: application/json
+
+{"description":"Deliver package to downtown","pickupAddress":"123 Warehouse St","deliveryAddress":"456 Main St","scheduledAt":"2027-06-01T09:00:00"}
+
+### 2. Create job with missing fields (expect 400)
+POST http://localhost:8080/api/jobs
+Content-Type: application/json
+
+{}
+
+### 3. Get all jobs (expect 200)
+GET http://localhost:8080/api/jobs
+
+### 4. Get job by ID (expect 200)
+GET http://localhost:8080/api/jobs/1
+
+### 5. Get job by non-existent ID (expect 404)
+GET http://localhost:8080/api/jobs/9999
+
+### 6. Assign job to driver (expect 200)
+PATCH http://localhost:8080/api/jobs/1/assign
+Content-Type: application/json
+
+{"driverId":1}
+
+### 7. Assign job to a busy driver (expect 409)
+PATCH http://localhost:8080/api/jobs/2/assign
+Content-Type: application/json
+
+{"driverId":2}
+
+### 8. Update job status - legal transition (expect 200)
+PATCH http://localhost:8080/api/jobs/1/status
+Content-Type: application/json
+
+{"newStatus":"IN_PROGRESS"}
+
+### 9. Update job status - illegal transition (expect 422)
+PATCH http://localhost:8080/api/jobs/1/status
+Content-Type: application/json
+
+{"newStatus":"UNASSIGNED"}
+
+### 10. Get all drivers (expect 200)
+GET http://localhost:8080/api/drivers
+
+### 11. Get drivers filtered by status (expect 200)
+GET http://localhost:8080/api/drivers?status=AVAILABLE
+
+### 12. Get driver by ID (expect 200)
+GET http://localhost:8080/api/drivers/1
+
+### 13. Get driver by non-existent ID (expect 404)
+GET http://localhost:8080/api/drivers/9999
+
+### 14. Get driver job schedule by date (expect 200)
+GET http://localhost:8080/api/drivers/1/jobs?date=2027-06-01
