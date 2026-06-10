@@ -22,28 +22,24 @@ public class DriverController {
     private final JobService jobService;
 
     @GetMapping
-    public ResponseEntity<List<DriverResponse>> getAllDrivers(
+    public ResponseEntity<List<DriverResponse>> getDrivers(
             @RequestParam(required = false) DriverStatus status) {
-        List<DriverResponse> response;
         if (status != null) {
-            response = driverService.getDriversByStatus(status);
-        } else {
-            response = driverService.getAllDrivers();
+            // Note: Called driverService instead of jobService as the method exists in DriverService
+            return ResponseEntity.ok(driverService.getDriversByStatus(status));
         }
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(driverService.getAllDrivers());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DriverResponse> getDriverById(@PathVariable Long id) {
-        DriverResponse response = driverService.getDriverById(id);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(driverService.getDriverById(id));
     }
 
     @GetMapping("/{id}/jobs")
-    public ResponseEntity<List<JobResponse>> getJobsByDriverAndDate(
+    public ResponseEntity<List<JobResponse>> getDriverJobs(
             @PathVariable Long id,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        List<JobResponse> response = jobService.getJobsByDriverAndDate(id, date);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(jobService.getJobsByDriverAndDate(id, date));
     }
 }

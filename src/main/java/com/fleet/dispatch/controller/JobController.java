@@ -28,29 +28,25 @@ public class JobController {
 
     @GetMapping
     public ResponseEntity<List<JobResponse>> getAllJobs() {
-        List<JobResponse> response = jobService.getAllJobs();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(jobService.getAllJobs());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<JobResponse> getJobById(@PathVariable Long id) {
-        JobResponse response = jobService.getJobById(id);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(jobService.getJobById(id));
     }
 
     @PatchMapping("/{id}/assign")
     public ResponseEntity<JobResponse> assignJob(
             @PathVariable Long id,
             @Valid @RequestBody AssignJobRequest request) {
-        JobResponse response = jobService.assignJob(id, request.getDriverId());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(jobService.assignJob(id, request.getDriverId()));
     }
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<JobResponse> updateJobStatus(
             @PathVariable Long id,
             @Valid @RequestBody UpdateJobStatusRequest request) {
-        JobResponse response = jobService.updateJobStatus(id, request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(jobService.updateJobStatus(id, request));
     }
 }
