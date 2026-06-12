@@ -59,6 +59,9 @@ mvn test
 2. **Status State Machine**: A robust validation mechanism in `JobService` prevents illegal job transitions (e.g., direct jump from UNASSIGNED to COMPLETED), ensuring operational integrity.
 3. **Optimistic Locking**: By using `@Version` on the Driver entity, the system prevents race conditions where two simultaneous requests might try to assign the same driver to different jobs.
 
+## Lessons Learned
+* **Trust but Verify with Tests**: During the final verification phase (Day 7), I discovered that while `@Valid` and `@NotNull` annotations were present in the codebase, the system was silently ignoring them. The root cause was a missing `spring-boot-starter-validation` dependency in `pom.xml`. Fixing this revealed hidden payload issues that unit tests alone hadn't caught, emphasizing the importance of controller slice tests and integration smoke tests.
+
 ## Error Responses
 The API returns a standardized JSON structure for all errors:
 
